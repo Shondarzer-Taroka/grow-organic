@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 interface ShowingDataTableProps {
     selectedRows: {
@@ -8,6 +8,7 @@ interface ShowingDataTableProps {
 }
 
 const ShowingDataTable: React.FC<ShowingDataTableProps> = ({ selectedRows, setSelectedRows }) => {
+    const [showingData,setShowingData]=useState<>([])
     return (
         <section>
 
