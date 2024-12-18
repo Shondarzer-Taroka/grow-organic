@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { showingDataTypes } from '../../types/showingDataTypes';
-import { getDataTables } from '../../Garbase/services/getDataApi';
-import { DataTable } from "primereact/datatable";
+import { DataTable, DataTableStateEvent } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Button } from "primereact/button";
 import { InputNumber } from "primereact/inputnumber";
 import { OverlayPanel } from "primereact/overlaypanel";
 import { FaAngleDown } from "react-icons/fa";
+import { getDataTables } from '../services/getDataApi';
 
 
 interface ShowingDataTableProps {
@@ -49,12 +49,17 @@ const ShowingDataTable: React.FC<ShowingDataTableProps> = ({ selectedRows, setSe
 
 
 
-    // Handle page changes
-    const onPageChange = (event: { first: number; rows: number; page: number }) => {
-        setPage(event.page);
-    };
+    // // Handle page changes
+    // const onPageChange = (event: { first: number; rows: number; page: number }) => {
+    //     setPage(event.page);
+    // };
 
-    // Bulk select rows across pages
+     const onPageChange = (event: DataTableStateEvent) => {
+        if (typeof event.page === "number") {
+          setPage(event.page);
+        }
+      };
+   
     const handleBulkSelection = async () => {
         const totalToSelect = rowCount;
         const updatedSelection = { ...selectedRows };
@@ -79,10 +84,10 @@ const ShowingDataTable: React.FC<ShowingDataTableProps> = ({ selectedRows, setSe
         }
 
         setSelectedRows(updatedSelection);
-        overlayPanelRef.current?.hide(); // Hide modal
+        overlayPanelRef.current?.hide(); 
     };
 
-    // Handle individual checkbox selection/deselection
+
     const handleSelectionChange = (e: { value: showingDataTypes[] }) => {
         const updatedSelection = { ...selectedRows };
         console.log(updatedSelection);
@@ -101,7 +106,7 @@ const ShowingDataTable: React.FC<ShowingDataTableProps> = ({ selectedRows, setSe
 
     const isRowSelected = (rowId: number) => !!selectedRows[rowId];
 
-    // Custom header with modal trigger icon
+ 
     const headerWithIcon = (
         <div style={{ display: "flex", alignItems: "center" }}>
             <span style={{ marginRight: "5px" }}>Title</span>
@@ -118,7 +123,7 @@ const ShowingDataTable: React.FC<ShowingDataTableProps> = ({ selectedRows, setSe
                         placeholder="Enter rows to select"
                         min={0}
                     />
-                    <Button label="Select Rows" onClick={handleBulkSelection} />
+                    <Button label="Select Rows" style={{background:'gray'}} onClick={handleBulkSelection} />
                 </div>
             </OverlayPanel>
         </div>
